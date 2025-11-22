@@ -58,8 +58,8 @@ public interface Json {
     try { return r.readAllAsString().toCharArray(); }
     catch (Exception e) { return uncheck(e); }
   }
-  static void writeChars(Writer w, char[] cs) {
-    try { w.write(cs); }
+  static void writeChars(Writer w, char[] chars) {
+    try { w.write(chars); }
     catch (Exception e) { uncheck(e); }
   }
 
