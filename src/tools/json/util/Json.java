@@ -27,8 +27,8 @@ public interface Json {
     new JsonEncoder().encode(o, w, Indent.ed(w,t));
   }
 
-  static JsonEncoder encoder() { return null; }
-  static JsonDecoder decoder() { return null; }
+  static JsonEncoder encoder() { return new JsonEncoder(); }
+  static JsonDecoder decoder() { return new JsonDecoder(); }
 
   @SuppressWarnings("unchecked")
   static Map<String,?> map(Object x) { return x instanceof Map m ? m : null; }
@@ -45,7 +45,7 @@ public interface Json {
   static boolean is(Object x) { // like javascript 'truthy'
     return switch(x) {
       case null -> false;
-      case Boolean b ->  b;
+      case Boolean b -> b;
       case Number n -> n.doubleValue() != 0.0;
       case String s -> !s.isEmpty();
       case Collection<?> c -> !c.isEmpty();
