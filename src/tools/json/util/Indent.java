@@ -25,6 +25,10 @@ public class Indent implements IntConsumer {
     catch (Exception e) { uncheck(e); }
   }
 
+  public static IntConsumer ed(Appendable a, int...t) {
+    return t.length > 0 ? new Indent(a,t[0]) : _->{};
+  }
+
   @SuppressWarnings("unchecked")
   static <T extends Throwable> void uncheck(Throwable t) throws T { throw (T)t; }
 }

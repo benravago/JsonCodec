@@ -2,9 +2,9 @@ package tools.json.util;
 
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.IntConsumer;
 
 public interface Json {
 
@@ -15,7 +15,7 @@ public interface Json {
 
   static CharSequence dumps(Object o, int...t) {
     var b = new StringBuilder();
-    new JsonEncoder().encode(o, b, indent(b,t));
+    new JsonEncoder().encode(o, b, Indent.ed(b,t));
     return b;
   }
 
@@ -24,7 +24,7 @@ public interface Json {
   }
 
   static void dump(Object o, Writer w, int...t) {
-    new JsonEncoder().encode(o, w, indent(w,t));
+    new JsonEncoder().encode(o, w, Indent.ed(w,t));
   }
 
   static JsonEncoder encoder() { return null; }
@@ -42,10 +42,16 @@ public interface Json {
   static float num(Object x, float y) { return x instanceof Number n ? n.floatValue() : y; }
   static double num(Object x, double y) { return x instanceof Number n ? n.doubleValue() : y; }
 
-  static boolean is(Object x) { return x != null; }
-
-  static IntConsumer indent(Appendable a, int...t) {
-    return t.length > 0 ? new Indent(a,t[0]) : _->{};
+  static boolean is(Object x) { // like javascript 'truthy'
+    return switch(x) {
+      case null -> false;
+      case Boolean b ->  b;
+      case Number n -> n.doubleValue() != 0.0;
+      case String s -> !s.isEmpty();
+      case Collection<?> c -> !c.isEmpty();
+      case Map<?,?> m -> !m.isEmpty();
+      default -> true;
+    };
   }
 
   static char[] readChars(Reader r) {
