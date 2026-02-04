@@ -1,6 +1,6 @@
 package tools.json.util;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.IntConsumer;
 
@@ -21,7 +21,7 @@ public class JsonEncoder {
   void value(Object v) throws Exception {
     switch (v) {
       case Map<?,?> m -> object(m);
-      case List<?> l -> array(l);
+      case Collection<?> l -> array(l);
       case String s -> string(s);
       case Number n -> o.append(n.toString());
       case Boolean b -> o.append(b.toString());
@@ -43,7 +43,7 @@ public class JsonEncoder {
     }
     d.accept(-1); o.append('}');
   }
-  void array(List<?> a) throws Exception {
+  void array(Collection<?> a) throws Exception {
     var n = a.size();
     o.append('['); d.accept(1);
     for (var e:a) {

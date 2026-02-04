@@ -1,11 +1,11 @@
 package tools.json.util;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.LinkedHashMap;
 
 public class JsonDecoder {
 
@@ -46,7 +46,7 @@ public class JsonDecoder {
   }
 
   Map<String,?> object() {
-    var map = new LinkedHashMap<String,Object>();
+    var map = dictionary();
     p++; // s[p] -> {
     var c = ws();
     while (c != '}') {
@@ -66,8 +66,8 @@ public class JsonDecoder {
     return key;
   }
 
-  List<?> array() {
-    var list = new ArrayList<Object>();
+  Collection<?> array() {
+    var list = vector();
     p++; // s[p] -> [
     var c = ws();
     while (c != ']') {
@@ -151,6 +151,9 @@ public class JsonDecoder {
   Object null_() {
     return (s[++p]=='u' && s[++p]=='l' && s[++p]=='l' && ++p > 0) ? null : fail();
   }
+  
+  protected Collection<Object> vector() { return new ArrayList<Object>(); }
+  protected Map<String,Object> dictionary() { return new LinkedHashMap<String,Object>(); }
 
   <T> T fail() { throw new MatchException("'"+s[p]+"' at line:"+(ln+1)+" col:"+(p-lc), null); }
 }
