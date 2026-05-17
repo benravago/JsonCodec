@@ -32,7 +32,7 @@ public interface Json {
   @SuppressWarnings("unchecked")
   static Map<String,?> map(Object x) { return x instanceof Map m ? m : null; }
   static Collection<?> list(Object x) { return x instanceof Collection l ? l : null; }
-  static String        str(Object x) { return x instanceof String s? s : null; }
+  static String        str(Object x) { return x instanceof String s ? s : null; }
   static Number        num(Object x) { return x instanceof Number n ? n : null; }
   static Boolean       bool(Object x) { return x instanceof Boolean b ? b : null; }
 
